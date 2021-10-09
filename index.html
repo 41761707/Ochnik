@@ -47,7 +47,10 @@
 				</article>
 				<article class="row center-block">
 					<section class="col text-center">
-						<button class="btn btn-info" onclick="shuffleTable()">Wygeneruj</button>
+						<button class="btn btn-info mb-3" onclick="shuffleTable()">Wygeneruj jednorazowo</button>
+					</section>
+					<section class="col text-center">
+						<button class="btn btn-info mb-3" onclick="createSeq()">Wygeneruj sekwencję</button>
 					</section>
 				</article>
 		</main>
@@ -95,9 +98,9 @@
 			}
     </script>
     <script>
-    	function shuffleTable() {
+    	function shuffleTable() 
+    	{
 			  //get the parent table for convenience
-			  let positionTable = document.getElementById("positionTable");
 			  let workerTable=document.getElementById("workerTable");
 			  let positionRows = positionTable.querySelectorAll("tr");
 			  let workerRows=workerTable.querySelectorAll("tr");
@@ -110,12 +113,7 @@
 			  }
 			  else
 			  {
-				  shuffledPositions=shuffleArray(positionPrepare);
 				  shuffledWorkers=shuffleArray(workerPrepare);
-
-				  for (const row of shuffledPositions) {
-				    positionTable.appendChild(row);
-				  }
 				  for (const row of shuffledWorkers) {
 				    workerTable.appendChild(row);
 				  }
@@ -132,6 +130,83 @@
 				  return array;
 				}
 			}
+    </script>
+    <script>
+    	function createSeq()
+    	{
+    		let workerTable=document.getElementById("workerTable");
+			let positionRows = positionTable.querySelectorAll("tr");
+			let workerRows=workerTable.querySelectorAll("tr");
+
+			let positionPrepare = Array.from(positionRows).slice(1);
+			let workerPrepare=Array.from(workerRows).slice(1);
+			if(positionPrepare.length!=workerPrepare.length)
+			{
+				alert("Tabele zawierają różne liczbę rekordów");
+			}
+			else
+			{
+				var positions=[]
+				for(var a=0;a<workerPrepare.length;a++)
+				{
+					positions.push(a)
+				}
+				shuffleArray(positions);
+				var body= document.body;
+				for(var i=0;i<workerPrepare.length;i++)
+				{
+					permutation=new Array(workerPrepare.length);
+					for(var j=0;j<workerPrepare.length;j++)
+					{
+						console.log((j+positions[i])%workerPrepare.length);
+						permutation[(j+positions[i])%workerPrepare.length]=workerPrepare[j];
+					}
+					console.log(permutation);
+					var table=document.createElement('table');
+					table.classList.add("table");
+					table.classList.add("table-striped");
+					table.classList.add("table-dark");
+					table.style.margin="0 auto";
+					table.style.width="95%";
+					let weekText=""
+					var week=table.insertRow(-1);
+					var weekCell=week.insertCell(0);
+					weekCell.colSpan="2";
+					var weekCellText=document.createTextNode(weekText.concat("Miesiac ",i+1));
+					weekCell.appendChild(weekCellText);
+					var header=table.insertRow(-1);
+					var header1=header.insertCell(0);
+					var header1Text=document.createTextNode("Obszar");
+					var header2=header.insertCell(1);
+					var header2Text=document.createTextNode("Audytor");
+					header1.appendChild(header1Text);
+					header2.appendChild(header2Text);
+					for(var j=0;j<permutation.length;j++)
+					{
+						var newRow=table.insertRow(-1);
+						var newPosition=newRow.insertCell(0);
+						var newPositionText=document.createTextNode(positionPrepare[j].outerText);
+						newPosition.appendChild(newPositionText);
+						var newWorker=newRow.insertCell(1);
+						var newWorkerText=document.createTextNode(permutation[j].outerText)
+						newWorker.appendChild(newWorkerText);
+					}
+					body.appendChild(table);
+				}
+			}
+    	}
+    	function shuffleArray(array) 
+    	{
+			for (var i = array.length - 1; i > 0; i--) 
+			{
+			    var j = Math.floor(Math.random() * (i + 1));
+			    var temp = array[i];
+			    array[i] = array[j];
+			    array[j] = temp;
+	    	}	
+			return array;
+		}
+
     </script>
   </body>
 </html>
