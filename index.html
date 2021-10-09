@@ -76,7 +76,7 @@
 
 				var newText = document.createTextNode(position);
 				newCell.appendChild(newText);
-			  return false; // stop submission
+			  return false
 			}
     </script>
     <script type="text/javascript">
@@ -162,18 +162,22 @@
 						permutation[(j+positions[i])%workerPrepare.length]=workerPrepare[j];
 					}
 					console.log(permutation);
+					var div= document.createElement('div');
+					div.classList.add("row");
+					div.classList.add("m-3");
+					div.classList.add("text-center");
 					var table=document.createElement('table');
 					table.classList.add("table");
 					table.classList.add("table-striped");
 					table.classList.add("table-dark");
 					table.style.margin="0 auto";
 					table.style.width="95%";
+					var h2=document.createElement('h2');
 					let weekText=""
-					var week=table.insertRow(-1);
-					var weekCell=week.insertCell(0);
-					weekCell.colSpan="2";
-					var weekCellText=document.createTextNode(weekText.concat("Miesiac ",i+1));
-					weekCell.appendChild(weekCellText);
+					weekText=weekText.concat("Miesiąc ", i+1);
+					h2.style.margin="0 auto";
+					h2.innerHTML=weekText;
+					div.appendChild(h2);
 					var header=table.insertRow(-1);
 					var header1=header.insertCell(0);
 					var header1Text=document.createTextNode("Obszar");
@@ -191,7 +195,8 @@
 						var newWorkerText=document.createTextNode(permutation[j].outerText)
 						newWorker.appendChild(newWorkerText);
 					}
-					body.appendChild(table);
+					body.appendChild(div);
+					div.appendChild(table);
 				}
 			}
     	}
